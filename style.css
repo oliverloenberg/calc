@@ -1,0 +1,121 @@
+html {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+*:focus {
+  outline: none;
+}
+/*Layout will be 4 columns and 7 rows. 2 rows for the display, 1 row for the clear & delete buttons and the rest for numbers * operations*/
+
+body {
+  background-color: rgb(231, 231, 231);
+}
+
+main {
+  width: 70vw;
+  height: auto;
+  margin: 20px auto;
+  padding: 30px 16px;
+  background-color: rgba(52, 17, 250, 0.5);
+  background-image: linear-gradient(
+    rgba(155, 66, 34, 0.3),
+    rgba(52, 17, 250, 0.5) 50%
+  );
+  border: 2px solid whitesmoke;
+  border-radius: 3.5px;
+  box-shadow: 0 2px 15px 1px rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template: repeat(7, 1fr) / repeat(4, 1fr);
+  row-gap: 10px;
+  column-gap: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-display {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  padding: 10px 15px;
+  font-size: 34px;
+  grid-column: span 4;
+  grid-row: span 2;
+  text-align: right;
+  border: 2px solid whitesmoke;
+  border-radius: 3.5px;
+  background-color: teal;
+  color: whitesmoke;
+}
+
+.input-history {
+  font-size: 14px;
+  flex: 1 2 auto;
+  font-weight: 400;
+}
+
+.input-result {
+  flex: 2 1 auto;
+  font-weight: 300;
+}
+
+.btn {
+  font-size: 16px;
+  color: whitesmoke;
+  box-shadow: 0 0 0 1.5px whitesmoke;
+  border-radius: 5px;
+  background-color: rgb(41, 41, 41);
+  padding: 10px 10px;
+  cursor: pointer;
+  /*   transition: background-color 0.2s ease, box-shadow 0.2s ease-out, color 0.2s; */
+  transition: all 0.2s ease;
+  outline: none;
+  border: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+.btn:hover {
+  background-color: rgb(12, 12, 12);
+  box-shadow: 0 0 0 2.5px white, 2px 2px 6px 2px rgba(8, 8, 8, 0.8);
+  color: white;
+}
+
+.clear,
+.delete {
+  grid-column: span 2;
+  font-weight: 400;
+}
+
+.clear {
+  background-color: rgb(206, 33, 33);
+}
+
+.clear:hover {
+  background-color: rgb(226, 42, 42);
+}
+
+.delete {
+  background-color: rgb(92, 138, 224);
+}
+
+.delete:hover {
+  background-color: rgb(100, 151, 245);
+}
+
+.resize-font {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+@media screen and (min-width: 780px) {
+  main {
+    width: 30vw;
+  }
+}
