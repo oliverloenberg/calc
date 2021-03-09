@@ -1,3 +1,6 @@
+//This calculator can only handle one operation at a time in its current iteration
+
+//Lets set up some variables we'll be using.
 let buttonPressed = "";
 let operatorChosen = "";
 let historyVals = [];
@@ -17,14 +20,14 @@ const testForEquals = /\=/im;
 
 //Attach an event listener on them all iterating through the buttons array
 buttons.forEach((button) => {
-  //Save the value attached to the button pressed to an array
+  //In this section we handle how to save the buttons pressed to an array called historyVals.
   button.addEventListener("click", function saveNum() {
     buttonPressed = button.textContent;
-    //if clear is pressed, then empty the array
+    //if clear is pressed, then empty the history array
     if (buttonPressed == "clear") {
       historyVals = [];
     }
-    //if delete is pressed then remove the last entered value in the array
+    //if delete is pressed then remove the last entered value in the history array
     else if (buttonPressed == "delete") {
       historyVals.pop();
     }
@@ -66,18 +69,18 @@ buttons.forEach((button) => {
       console.log("Something went horribly wrong");
     }
   });
-  //Display the pressed value
+  //This is the section where we handle how to display the pressed value
   button.addEventListener("click", function displayNum() {
     buttonPressed = button.textContent;
-    //Clear the display
+    //Clear the display when clear has been pressed
     if (buttonPressed == "clear") {
       console.log(`This is currently ${historyValsDisplay}`);
       inputResult.textContent = "0";
       inputHistory.textContent = "0";
     }
-    //Remove the last entry from the display
+    //Remove the last entry from the display when delete i pressed
     else if (buttonPressed == "delete") {
-      console.log("Delete is pressed");
+      //console.log("Delete is pressed");
       inputResult.textContent = historyVals.join("");
       inputHistory.textContent = historyVals.join("");
     } else if (buttonPressed == "=" && historyVals.length == 0) {
@@ -88,13 +91,14 @@ buttons.forEach((button) => {
     ) {
       inputHistory.textContent += " =";
     }
-    //Add the latest pressed entry to the display
+    //If none of the above are the case then we can finally add the latest pressed entry to the display
     else {
       inputResult.textContent = historyVals.join("");
       inputHistory.textContent = historyVals.join("");
     }
   });
 
+  //In this section we handle the calculation itself and display the result
   button.addEventListener("click", function () {
     if (buttonPressed == "=" && historyVals.length != 0) {
       performCalc();
@@ -103,7 +107,7 @@ buttons.forEach((button) => {
   });
 });
 
-//Basic mathematical functions
+//Basic mathematical functions needed for our calculator
 
 let add = (a, b) => a + b;
 
@@ -144,6 +148,7 @@ let operate = (operator, val1, val2) => {
     val1 is: ${val1}
     val2 is: ${val2}`;
   }
+  //If the user inputs decimals we need to be able to handle that
   if (!Number.isInteger(result)) {
     let fixedResult = result.toFixed(2);
     return fixedResult;
@@ -182,40 +187,58 @@ let performCalc = () => {
       Number(numsBeforeOperator),
       Number(numsAfterOperator)
     );
-    //Put the result into the historyVals array as a string
     historyVals = [operationResult.toString()];
-    //Change the display to show the result of the calc, and make it a string, unless we are diving by Zero which gives us Infinity
+
+    //If the result gives infinity then put in a cheeky little comment
     if (operationResult == "Infinity") {
       inputResult.textContent = "Dividing by Zero are we?";
-      historyVals = [];
+      historyVals = ["Dividing by Zero are we?"];
     }
   }
 };
 
-//Keyboard support and with a bit different structure where saving the number and displaying it is happening in the same anonymous function
-
+//Keyboard support and with a bit different structure for practice sake where saving the number and displaying it is happening in the same anonymous function
+//Regex that looks for numbers pressed
 const testForNums = /1|2|3|4|5|6|7|8|9|0/im;
 
 document.addEventListener("keydown", (event) => {
   let keyPressed = event.key;
-  //If the key pressed is a number or a math operator, then push it to the histoyVals array, and display them. When enter is pressed perform the calculation
+  //If the key pressed is a number or a math operator, then push it to the histoyVals array, and display them.
   if (testForNums.test(keyPressed)) {
     historyVals.push(keyPressed);
     console.log(historyVals);
     inputResult.textContent = historyVals.join("");
     inputHistory.textContent = historyVals.join("");
-  } else if (
+  }
+  //Check if a symbol is pressed and if there already is one present in the array, if not then push it to the array.
+  else if (
     testMathSymbols.test(keyPressed) &&
     testMathSymbols.test(historyVals.join("")) == false
   ) {
     historyVals.push(keyPressed);
     inputResult.textContent = historyVals.join("");
     inputHistory.textContent = historyVals.join("");
-  } else if (keyPressed == ",") {
+  }
+  //translate comma to dot so javascript can understand it when doing the calculations.
+  else if (keyPressed == ",") {
     historyVals.push(".");
     inputResult.textContent = historyVals.join("");
     inputHistory.textContent = historyVals.join("");
-  } else if (keyPressed == "Enter") {
+  }
+  //When delete is pressed remove the last entry pushed to the array
+  else if (keyPressed == "Delete") {
+    historyVals.pop();
+    inputResult.textContent = historyVals.join("");
+    inputHistory.textContent = historyVals.join("");
+  }
+  //When backspace is pressed clear the whole array
+  else if (keyPressed == "Backspace") {
+    historyVals = [];
+    inputResult.textContent = historyVals.join("");
+    inputHistory.textContent = historyVals.join("");
+  }
+  //When enter is pressed perform the calculation
+  else if (keyPressed == "Enter") {
     console.log("Enter was pressed!");
     performCalc();
     inputResult.textContent = historyVals[0];
